@@ -1,0 +1,29 @@
+{% extends "locations/base.html" %}
+{% block content %}
+{% include "components/navbar.html" %}
+    <div class="container">
+        <a href="{% url 'locations:activity_modify' activity.id %}"> </a>
+        <h1> Activity: {{ activity.name }}
+          {% if user.is_staff or user == activity.author %}
+          <a href="{% url 'locations:activity_modify' activity.id %}" class="btn btn-success">Edit activity</a> &nbsp;
+          {% endif %}
+          {% if user.is_staff or user == author %}
+            <a onclick="return confirm('Are you sure you want to delete this?')" 
+            class="btn btn-success" 
+            href="{% url 'locations:activity_delete' activity.id %}">Delete activity</a>
+          {% endif %}
+        </h1>
+        {% if user.is_staff %}
+          <p>Author: {{author}}</p>
+        {% elif user == author  %}
+          <p>You authored this study space!</p>
+        {% endif %}
+        <p> Location: {{ activity.location }}</p>
+        <p> Time: {{ activity.date_time }}</p>
+        <p> Needs RSVP: {% if activity.reservation %}Yes.{% else %}Nope!{% endif %}</p>
+        <p> Location Details: {{activity.location_details}}</p>
+        <p> Incentives: {{activity.incentives}}</p>
+        <p>Maximum Occupancy: {{ activity.maximum_occupancy }}</p>
+        {% include "locations/map_display.html" %}
+    </div>
+{% endblock %}

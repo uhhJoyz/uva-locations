@@ -1,0 +1,8 @@
+{% extends "locations/base.html" %}
+{% block content %}
+{% include "components/navbar.html" %}
+<div class="container">
+  <h1> Looks like you got lost! (Error {{ status }}) </h1>
+  <a href={% url 'locations:index' %}> Click here to get back to safety. </a>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "locations/base.html" %}
+{% block content %}
+{% include "components/navbar.html" %}
+
+      <div class="container">
+        
+        <h1>Study Space: {{ study_space.name }}
+          {% if user.is_staff or user == study_space.author %}
+            &nbsp;
+            <a href="{% url 'locations:study_space_modify' study_space.id %}" class="btn btn-success">Edit study space</a> &nbsp;
+          {% endif %}
+          {% if user.is_staff or user == author %}
+            <a 
+            onclick="return confirm('Are you sure you want to delete this?')" 
+            class="btn btn-success" 
+            href="{% url 'locations:study_space_delete' study_space.id %}">Delete study space</a>
+          {% endif %}
+        </h1>
+        {% if user.is_staff %}
+          <p>Author: {{author}}</p>
+        {% elif user == author  %}
+          <p>You authored this study space!</p>
+        {% endif %}
+        <p>Location: {{ study_space.location }}</p>
+        <p>{{ study_space.available_date }}</p>
+        <p>Noise Level: {{ study_space.noise_level }} </p>
+        <p>Opening Hours: {{ study_space.start_hours }} </p>
+        <p>Closing Hours: {{ study_space.end_hours }} </p>
+        <p>Reservation needed: {% if study_space.reservation %}Yes.{% else %}Nope!{% endif %}</p>
+        <p>Location Details: {{ study_space.location_details}}</p>
+        <p>Amenities: {{ study_space.amenities}}</p>
+        <p>Maximum Occupancy: {{ study_space.maximum_occupancy }}</p>
+        {% include "locations/map_display.html" %}
+    </div>
+{% endblock %}

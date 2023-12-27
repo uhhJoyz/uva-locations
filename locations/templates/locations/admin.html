@@ -1,0 +1,62 @@
+{% extends "locations/base.html" %}
+{% load socialaccount %}
+{% block content %}
+{% include "components/navbar.html" %}
+  <div class="container">
+      <div class="row">
+          <div class="alert alert-info" role="alert">
+                    Welcome, {{ user.first_name }} {{ user.last_name }}. You are logged in as an admin ({{ user.username }}).
+          </div>
+      </div>
+      <div class="row">
+          <div class="col md-6">
+              <h2> Verified Study Spaces </h2>
+              <form method="post" action="{% url 'locations:admin_home' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="activity_key" value="{{ prev_act_key }}" />
+                  <button class="btn btn-primary" type="submit" name="space_key" value="spaces_by_name" style="margin-top: 10px;">Sort by Name</button>
+                  <button class="btn btn-primary" type="submit" name="space_key" value="spaces_by_location" style="margin-top: 10px;">Sort by Location</button>
+                  <button class="btn btn-primary" type="submit" name="space_key" value="spaces_by_noise_level" style="margin-top: 10px;">Sort by Noise Level</button>
+                  <button class="btn btn-primary" type="submit" name="space_key" value="reset" style="margin-top: 10px;">Reset</button>
+              </form>
+              {% if displayed_spaces %}
+                {% for study_space in displayed_spaces %}
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <a class="card-title" href="{% url 'locations:study_space_view' study_space.id %}">Name: {{ study_space.name }}</a>
+                            <p class="card-text">Location: {{ study_space.location }} </p>
+                            <p class="card-text">Noise Level: {{ study_space.noise_level }} </p>
+                        </div>
+                    </div>
+                {% endfor %}
+              {% else %}
+                  <p>There are currently no study spaces to display.</p>
+              {% endif %}
+          </div>
+          <div class="col md-6">
+              <h2> Verified Activities </h2>
+              <form method="post" action="{% url 'locations:admin_home' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="space_key" value="{{ prev_space_key }}" />
+                  <button class="btn btn-primary" type="submit" name="activity_key" value="activities_by_name" style="margin-top: 10px;">Sort by Name</button>
+                  <button class="btn btn-primary" type="submit" name="activity_key" value="activities_by_location" style="margin-top: 10px;">Sort by Location</button>
+                  <button class="btn btn-primary" type="submit" name="activity_key" value="activities_by_date" style="margin-top: 10px;">Sort by Date</button>
+                  <button class="btn btn-primary" type="submit" name="activity_key" value="reset" style="margin-top: 10px;">Reset</button>
+              </form>
+              {% if displayed_activities %}
+                {% for activity in displayed_activities %}
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <a class="card-title" href="{% url 'locations:activity_view' activity.id %}">Name: {{ activity.name }}</a>
+                            <p class="card-text">Location: {{ activity.location }} </p>
+                            <p class="card-text">Date: {{ activity.date_time }} </p>
+                        </div>
+                    </div>
+                {% endfor %}
+              {% else %}
+                <p>There are currently no activities to display.</p>
+              {% endif %}
+          </div>
+      </div>
+  </div>
+{% endblock %}

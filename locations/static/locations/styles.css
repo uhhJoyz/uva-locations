@@ -1,0 +1,14 @@
+.maphodler {
+  height: 500px;
+  width: 500px;
+}
+
+#map {
+  height: 500px;
+  width: 500px;
+}
+
+* {
+  font-family: 'Montserrat', sans-serif;
+  font: 'Montserrat';
+}

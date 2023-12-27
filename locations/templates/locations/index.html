@@ -1,0 +1,77 @@
+{% extends "locations/base.html" %}
+{% load socialaccount %}
+{% block content %}
+    {% if user.is_staff %}
+        <div class="alert alert-danger" role="alert">
+            Whoops! Looks like you ended up on the wrong page. Click <a href="{% url 'admin_home' %}">here</a> to return to the admin homepage.
+        </div>
+    {% elif user.is_authenticated %}
+        {% include "components/navbar.html" %}
+        <div class="container">
+            <div class="row">
+                <div class="alert alert-info" role="alert">
+                    Welcome, {{ user.first_name }} {{ user.last_name }}, you are logged in as {{ user.username }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col md-6">
+                    <h2> Study Spaces </h2>
+                    <form method="post" action="{% url 'locations:index' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="activity_key" value="{{ prev_act_key }}" />
+                        <button class="btn btn-primary" type="submit" name="space_key" value="spaces_by_name" style="margin-top: 10px;">Sort by Name</button>
+                        <button class="btn btn-primary" type="submit" name="space_key" value="spaces_by_location" style="margin-top: 10px;">Sort by Location</button>
+                        <button class="btn btn-primary" type="submit" name="space_key" value="spaces_by_noise_level" style="margin-top: 10px;">Sort by Noise Level</button>
+                        <button class="btn btn-primary" type="submit" name="space_key" value="reset" style="margin-top: 10px;">Reset</button>
+                    </form>
+                    {% if displayed_spaces %}
+                        {% for study_space in displayed_spaces %}
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <a class="card-title" href="{% url 'locations:study_space_view' study_space.id %}">Name: {{ study_space.name }}</a>
+                                    <p class="card-text">Location: {{ study_space.location }} </p>
+                                    <p class="card-text">Noise Level: {{ study_space.noise_level }} </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>There are currently no study spaces to display.</p>
+                    {% endif %}
+                </div>
+                <div class="col md-6">
+                    <h2> Activities </h2>
+                    <form method="post" action="{% url 'locations:index' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="space_key" value="{{ prev_space_key }}" />
+                        <button class="btn btn-primary" type="submit" name="activity_key" value="activities_by_name" style="margin-top: 10px;">Sort by Name</button>
+                        <button class="btn btn-primary" type="submit" name="activity_key" value="activities_by_location" style="margin-top: 10px;">Sort by Location</button>
+                        <button class="btn btn-primary" type="submit" name="activity_key" value="activities_by_date" style="margin-top: 10px;">Sort by Date</button>
+                        <button class="btn btn-primary" type="submit" name="activity_key" value="reset" style="margin-top: 10px;">Reset</button>
+                    </form>
+                    {% if displayed_activities %}
+                        {% for activity in displayed_activities %}
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <a class="card-title" href="{% url 'locations:activity_view' activity.id %}">Name: {{ activity.name }}</a>
+                                    <p class="card-text">Location: {{ activity.location }} </p>
+                                    <p class="card-text">Date: {{ activity.date_time }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>There are no activities to display.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="card text-center" style="width: 450px; margin: auto; top: 100px;">
+                <div class="card-body">
+                    <h1>Welcome</h1>
+                    <a class="btn btn-primary" href="{% provider_login_url 'google' %}">Log in with Google</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

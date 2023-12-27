@@ -1,0 +1,7 @@
+Oauth:
+- The oauth feature was implemented taking inspiration from this blog post: https://dev.to/mdrhmn/django-google-authentication-using-django-allauth-18f8
+- additionally, the docs were used in the development of this feature (found here: https://django-allauth.readthedocs.io/en/latest/)
+Styling:
+- The method of styling for login.html and signup.html was discovered and referenced from https://python.plainenglish.io/proper-way-of-using-google-authentication-with-django-and-django-allauth-part-2-c47b87dd1283
+- The way to make the account sign up error messages visible was found from https://stackoverflow.com/questions/24273839/django-allauth-custom-login-does-not-show-errors
+- The bootstrap docs were also used while styling (https://getbootstrap.com/docs/5.3/getting-started/introduction/)

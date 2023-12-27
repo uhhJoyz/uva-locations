@@ -1,0 +1,52 @@
+{% extends "locations/base.html" %}
+{% block content %}
+{% include "components/navbar.html" %}
+  <div class="container">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        <h1>Submit new study space</h1>
+      </div>
+      <div class="row">
+        <div class="col md-6">
+          {% if error_message %}
+              <div class="alert alert-danger" role="alert">
+                <p><strong>{{ error_message }}</strong></p>
+              </div>
+          {% endif %}
+          <label for="a_name">Study space name:</label>
+          <input type="text" id="a_name" name="a_name" required value="{{study_space.name}}"/><br />
+
+          <label for="noise_level">Noise Level (1-5):</label>
+          <input type="number" id="noise_level" name="noise_level" min="1" max="5" required value="{{study_space.noise_level}}"/><br />
+
+          <label for="start_hours">Opening Hours:</label>
+          <input type="time" id="start_hours" name="start_hours" required value="{{ start_hours }}"/><br />
+
+          <label for="end_hours">Closing Hours:</label>
+          <input type="time" id="end_hours" name="end_hours" value="{{ end_hours }}"/><br />
+
+          <label for ="reservation"> Reservation Required?: </label>
+          <input type="checkbox" id="reservation" name="reservation" {% if study_space.reservation %}checked{% endif %}><br />
+
+          <label for="location_details"> Enter any additional details about the location: </label>
+          <input type="text" id="location_details" name="location_details" value="{{study_space.location_details}}"/><br />
+
+          <label for="amenities"> Enter any amenities available: </label>
+          <input type="text" id="amenities" name="amenities" value="{{study_space.amenities}}"/><br />
+
+          <label for="maximum_occupancy">Maximum Occupancy</label>
+          <input type="number" id="maximum_occupancy" name="maximum_occupancy" required value="{{ study_space.maximum_occupancy }}"/> <br/>
+        </div>
+        <div class="col md-6">
+          <label for="l_name">Location:</label>
+          <input type="text" id="l_name" name="l_name" required value="{{study_space.location}}"/><br />
+          {% include "locations/edit_map.html" %}
+        </div>
+      </div>
+      <button class="btn btn-success" type="submit">Save</button>
+      <p> If you are not an administrator, your study space will need to be verified again after saving and will no longer be visible if you save. </p>
+    </form>
+    <a class="btn btn-success" href="{% url 'locations:study_space_view' study_space.id %}">Go back without saving</a>
+  </div>
+{% endblock %}

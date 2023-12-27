@@ -1,0 +1,17 @@
+{% include "locations/base.html"%}
+{% block content %}
+    <div class="container">
+        <div class="card text-center" style="width: 36rem; margin: auto; top: 100px;">
+            <div class="card-body">
+                <h1>Welcome</h1>
+                <p>In order to sign in, you must use a third party account provided by Google.</p>
+                <form method="post">
+                    <div class="justify-center">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Log in with Google</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

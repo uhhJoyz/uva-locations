@@ -1,0 +1,52 @@
+{% include "locations/base.html"%}
+
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+  <div class="row text-center">
+      <div class="alert alert-info" role="alert">
+          Already have an account? Then please <a href="{{ login_url }}">sign in</a>.
+      </div>
+  </div>
+  <div class="row text-center">
+    {% if form.errors %}
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+  <div class="row">
+      <div class="card" style="width: auto; margin: auto;">
+          <div class="card-body">
+            <h1 class="card-title">Create Your Account</h1>
+              <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                <div class="justify-center mx-3">
+                  {% csrf_token %}
+                  <div class="row" style="margin-top:10px">
+                    {{ form.username }}
+                  </div>
+                  <div class="row" style="margin-top:10px">
+                    {{ form.email }}
+                  </div>
+                  <div class="row" style="margin-top:10px">
+                    {{ form.password1 }}
+                  </div>
+                  <div class="row" style="margin-top:10px">
+                    {{ form.password2 }}
+                  </div>
+                  {% if redirect_field_value %}
+                    <input type="text" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                  {% endif %}
+                  <button type="submit" class="btn btn-primary" style="margin-top:10px">{% trans "Sign Up"%}</button>
+                </div>
+              </form>
+          </div>
+      </div>
+</div>
+{% endblock %}

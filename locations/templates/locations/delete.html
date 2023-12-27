@@ -1,0 +1,50 @@
+{% extends "locations/base.html" %}
+{% block content %}
+{% include "components/navbar.html" %}
+  <div class="container">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row>">
+        <div class="col md-6">
+          <h1>Delete Study Spaces</h1>
+          {% if unverified_spots_list %}
+            <ul>
+              {% for spot in unverified_spots_list %}
+                <li>
+                  <label>
+                    <input type="checkbox" name="study_spaces" value="{{ spot.id }}" />
+                    <a href="{% url 'locations:study_space_view' spot.id %}">Name: {{ spot.name }}</a>
+                    <br />
+                    Location: {{ spot.location }}
+                  </label>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+              <p>You have zero submitted study spaces</p>
+          {% endif %}
+        </div>
+        <div class="col md-6">
+          <h1>Delete Activities</h1>
+          {% if unverified_activities_list %}
+            <ul>
+              {% for activity in unverified_activities_list %}
+                <li>
+                  <label>
+                    <input type="checkbox" name="activities" value="{{ activity.id }}" />
+                    <a href="{% url 'locations:activity_view' activity.id %}">Name: {{ activity.name }}</a>
+                    <br />
+                    Location: {{ activity.location }}
+                  </label>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>You have zero submitted activities</p>
+          {% endif %}
+        </div>
+        <button class="btn btn-success" type="submit">Delete Selected</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
